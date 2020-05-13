@@ -1,26 +1,31 @@
 import React from 'react';
-import logo from './logo.svg';
+import API from './API'
 import './App.css';
 
-function App() {
+class App extends React.Component {
+  state ={
+    drinks: []
+  }
+  componentDidMount(){
+    fetch("https://www.thecocktaildb.com/api/json/v1/1/search.php?s=margarita")
+      .then(resp => resp.json())
+      .then(data => this.setState({
+        drinks: data.drinks
+      }))
+  }
+
+  renderDrinks = () => {
+    return this.state.drinks.map(drink => <img src={drink.strDrinkThumb} alt={drink.strDrinkThumb} />)
+  }
+
+  render(){
+    console.log(this.state.drinks)
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      {this.renderDrinks()}
     </div>
   );
+}
 }
 
 export default App;
